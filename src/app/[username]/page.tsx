@@ -51,6 +51,9 @@ interface Theme {
     background: string
     text: string
   }
+  backgroundImage?: string
+  font?: string
+  isDarkMode?: boolean
   createdAt: Date
   updatedAt: Date
 }
@@ -182,7 +185,10 @@ export default function UserProfilePage() {
     <div
       className="min-h-screen"
       style={{
-        background: theme?.colors.background || 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+        background: theme?.backgroundImage
+          ? `url(${theme.backgroundImage}) center/cover no-repeat`
+          : theme?.colors.background || 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        fontFamily: theme?.font || 'inherit'
       }}
     >
       <div className="container mx-auto px-4 py-8 max-w-2xl">
@@ -195,7 +201,9 @@ export default function UserProfilePage() {
                 alt={user.displayName || user.username}
                 width={120}
                 height={120}
-                className="rounded-full mx-auto mb-4 border-4 border-white/20 shadow-lg"
+                className={`rounded-full mx-auto mb-4 border-4 shadow-lg ${
+                  theme?.isDarkMode ? 'border-white/10' : 'border-white/20'
+                }`}
               />
             )}
             <h1 className="text-3xl font-bold mb-2" style={{ color: theme?.colors.text || '#ffffff' }}>
@@ -214,7 +222,7 @@ export default function UserProfilePage() {
             variant="outline"
             className="mb-8"
             style={{
-              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              backgroundColor: theme?.isDarkMode ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.1)',
               borderColor: theme?.colors.secondary || '#60a5fa',
               color: theme?.colors.text || '#ffffff'
             }}
@@ -224,7 +232,9 @@ export default function UserProfilePage() {
         </div>
 
         {/* Links Section */}
-        <Card className="bg-white/10 backdrop-blur-sm border-white/20">
+        <Card
+          className={`${theme?.isDarkMode ? 'bg-black/20 backdrop-blur-sm border-white/10' : 'bg-white/10 backdrop-blur-sm border-white/20'}`}
+        >
           <CardHeader>
             <h2 className="text-xl font-semibold text-center" style={{ color: theme?.colors.text || '#ffffff' }}>
               Links
@@ -239,7 +249,11 @@ export default function UserProfilePage() {
                 <Button
                   onClick={() => handleLinkClick(link)}
                   variant="outline"
-                  className="w-full justify-between h-auto p-4 bg-white/5 hover:bg-white/10 border-white/20 hover:border-white/30 transition-all duration-200"
+                  className={`w-full justify-between h-auto p-4 transition-all duration-200 ${
+                    theme?.isDarkMode
+                      ? 'bg-black/5 hover:bg-black/10 border-white/10 hover:border-white/20'
+                      : 'bg-white/5 hover:bg-white/10 border-white/20 hover:border-white/30'
+                  }`}
                   style={{
                     color: theme?.colors.text || '#ffffff'
                   }}

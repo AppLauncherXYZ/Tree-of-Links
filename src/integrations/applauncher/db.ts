@@ -22,6 +22,9 @@ export interface Theme {
     background: string;
     text: string;
   };
+  backgroundImage?: string;
+  font?: string;
+  isDarkMode?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -92,6 +95,9 @@ const mockThemes: Theme[] = [
       background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
       text: '#ffffff'
     },
+    backgroundImage: 'https://images.unsplash.com/photo-1557683316-973673baf926?w=800&h=600&fit=crop',
+    font: 'Inter',
+    isDarkMode: false,
     createdAt: new Date('2024-01-01'),
     updatedAt: new Date('2024-01-01')
   },
@@ -105,6 +111,9 @@ const mockThemes: Theme[] = [
       background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
       text: '#ffffff'
     },
+    backgroundImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop',
+    font: 'Poppins',
+    isDarkMode: true,
     createdAt: new Date('2024-01-01'),
     updatedAt: new Date('2024-01-01')
   }
