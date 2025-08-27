@@ -11,6 +11,7 @@ import { getCurrentUser } from "@/integrations/applauncher/auth"
 import { getTheme, saveTheme } from "@/integrations/applauncher/db"
 import { Upload, Palette, Type, Moon, Sun } from "lucide-react"
 import Image from "next/image"
+import { ThemeTabSkeleton } from "@/components/ui/skeleton-loaders"
 
 interface Theme {
   id: string
@@ -173,11 +174,7 @@ export function ThemeTab() {
   }
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center p-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    )
+    return <ThemeTabSkeleton />
   }
 
   if (!theme || !user) {
@@ -189,7 +186,7 @@ export function ThemeTab() {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
       {/* Controls Panel */}
       <div className="space-y-6">
         <Card>
@@ -230,6 +227,7 @@ export function ThemeTab() {
                   value={theme.colors.primary}
                   onChange={(e) => updateColors({ primary: e.target.value })}
                   className="w-12 h-10 border rounded cursor-pointer"
+                  aria-label="Choose primary color"
                 />
                 <Input
                   value={theme.colors.primary}
@@ -249,6 +247,7 @@ export function ThemeTab() {
                   value={theme.colors.secondary}
                   onChange={(e) => updateColors({ secondary: e.target.value })}
                   className="w-12 h-10 border rounded cursor-pointer"
+                  aria-label="Choose secondary color"
                 />
                 <Input
                   value={theme.colors.secondary}
@@ -268,6 +267,7 @@ export function ThemeTab() {
                   value={theme.colors.background.startsWith('#') ? theme.colors.background : '#667eea'}
                   onChange={(e) => updateColors({ background: e.target.value })}
                   className="w-12 h-10 border rounded cursor-pointer"
+                  aria-label="Choose background color"
                 />
                 <Input
                   value={theme.colors.background}
@@ -292,6 +292,7 @@ export function ThemeTab() {
                   variant="outline"
                   onClick={() => document.getElementById('background-image')?.click()}
                   className="flex items-center gap-2"
+                  aria-label="Upload background image"
                 >
                   <Upload className="w-4 h-4" />
                   Upload Image
@@ -301,6 +302,7 @@ export function ThemeTab() {
                     variant="outline"
                     size="sm"
                     onClick={() => updateTheme({ backgroundImage: undefined })}
+                    aria-label="Remove background image"
                   >
                     Remove
                   </Button>
@@ -370,6 +372,7 @@ export function ThemeTab() {
               onClick={handleSaveTheme}
               disabled={saving}
               className="w-full"
+              aria-label="Save current theme settings"
             >
               {saving ? 'Saving...' : 'Save Theme'}
             </Button>

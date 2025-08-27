@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge"
 import { toast } from "sonner"
 import { Plus, GripVertical, Trash2, ExternalLink, Star } from "lucide-react"
 import { Link, listLinks, createLink, updateLink, deleteLink, reorderLinks, AVAILABLE_ICONS } from "@/integrations/applauncher/links"
+import { LinksTabSkeleton } from "@/components/ui/skeleton-loaders"
 
 export function LinksTab() {
   const [links, setLinks] = useState<Link[]>([])
@@ -116,21 +117,7 @@ export function LinksTab() {
   }
 
   if (isLoading) {
-    return (
-      <div className="space-y-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Manage Your Links</CardTitle>
-            <CardDescription>
-              Create and organize your link tree for easy sharing.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="text-sm text-muted-foreground">Loading links...</div>
-          </CardContent>
-        </Card>
-      </div>
-    )
+    return <LinksTabSkeleton />
   }
 
   return (
@@ -146,12 +133,12 @@ export function LinksTab() {
             </div>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
-                <Button>
+                <Button aria-label="Add new link">
                   <Plus className="mr-2 h-4 w-4" />
                   Add Link
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
+              <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto">
                 <form onSubmit={handleCreateLink}>
                   <DialogHeader>
                     <DialogTitle>Add New Link</DialogTitle>
@@ -160,21 +147,21 @@ export function LinksTab() {
                     </DialogDescription>
                   </DialogHeader>
                   <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="title" className="text-right">
+                    <div className="grid grid-cols-1 sm:grid-cols-4 sm:items-center gap-2 sm:gap-4">
+                      <Label htmlFor="title" className="sm:text-right">
                         Title
                       </Label>
                       <Input
                         id="title"
                         value={formData.title}
                         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                        className="col-span-3"
+                        className="sm:col-span-3"
                         placeholder="Link title"
                         required
                       />
                     </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="url" className="text-right">
+                    <div className="grid grid-cols-1 sm:grid-cols-4 sm:items-center gap-2 sm:gap-4">
+                      <Label htmlFor="url" className="sm:text-right">
                         URL
                       </Label>
                       <Input
@@ -182,20 +169,20 @@ export function LinksTab() {
                         type="url"
                         value={formData.url}
                         onChange={(e) => setFormData({ ...formData, url: e.target.value })}
-                        className="col-span-3"
+                        className="sm:col-span-3"
                         placeholder="https://example.com"
                         required
                       />
                     </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="icon" className="text-right">
+                    <div className="grid grid-cols-1 sm:grid-cols-4 sm:items-center gap-2 sm:gap-4">
+                      <Label htmlFor="icon" className="sm:text-right">
                         Icon
                       </Label>
                       <Select
                         value={formData.icon}
                         onValueChange={(value) => setFormData({ ...formData, icon: value })}
                       >
-                        <SelectTrigger className="col-span-3">
+                        <SelectTrigger className="sm:col-span-3">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -207,11 +194,11 @@ export function LinksTab() {
                         </SelectContent>
                       </Select>
                     </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="premium" className="text-right">
+                    <div className="grid grid-cols-1 sm:grid-cols-4 sm:items-center gap-2 sm:gap-4">
+                      <Label htmlFor="premium" className="sm:text-right">
                         Premium
                       </Label>
-                      <div className="col-span-3 flex items-center space-x-2">
+                      <div className="sm:col-span-3 flex items-center space-x-2">
                         <Switch
                           id="premium"
                           checked={formData.isPremium}
@@ -221,11 +208,11 @@ export function LinksTab() {
                       </div>
                     </div>
                   </div>
-                  <DialogFooter>
-                    <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+                  <DialogFooter className="flex-col sm:flex-row gap-2 sm:gap-0">
+                    <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)} className="w-full sm:w-auto">
                       Cancel
                     </Button>
-                    <Button type="submit" disabled={isSubmitting}>
+                    <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
                       {isSubmitting ? "Creating..." : "Create Link"}
                     </Button>
                   </DialogFooter>
@@ -255,36 +242,38 @@ export function LinksTab() {
                             className={`transition-shadow ${snapshot.isDragging ? 'shadow-lg' : ''}`}
                           >
                             <CardContent className="p-4">
-                              <div className="flex items-center space-x-4">
-                                <div {...provided.dragHandleProps} className="cursor-grab">
+                              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                                <div {...provided.dragHandleProps} className="cursor-grab flex items-center sm:flex-shrink-0" aria-label="Drag to reorder link">
                                   <GripVertical className="h-4 w-4 text-muted-foreground" />
                                 </div>
 
-                                <div className="flex-1 space-y-2">
-                                  <div className="flex items-center space-x-2">
-                                    <h3 className="font-medium">{link.title}</h3>
-                                    {link.isPremium && (
-                                      <Badge variant="secondary">
-                                        <Star className="mr-1 h-3 w-3" />
-                                        Premium
-                                      </Badge>
-                                    )}
-                                    {!link.isVisible && (
-                                      <Badge variant="outline">Hidden</Badge>
-                                    )}
+                                <div className="flex-1 space-y-2 min-w-0">
+                                  <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                                    <h3 className="font-medium truncate">{link.title}</h3>
+                                    <div className="flex items-center gap-2">
+                                      {link.isPremium && (
+                                        <Badge variant="secondary" className="text-xs">
+                                          <Star className="mr-1 h-3 w-3" />
+                                          Premium
+                                        </Badge>
+                                      )}
+                                      {!link.isVisible && (
+                                        <Badge variant="outline" className="text-xs">Hidden</Badge>
+                                      )}
+                                    </div>
                                   </div>
                                   <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                                    <ExternalLink className="h-3 w-3" />
-                                    <span>{link.url}</span>
+                                    <ExternalLink className="h-3 w-3 flex-shrink-0" />
+                                    <span className="truncate">{link.url}</span>
                                   </div>
                                 </div>
 
-                                <div className="flex items-center space-x-2">
+                                <div className="flex flex-wrap items-center gap-2 sm:gap-3 sm:flex-shrink-0">
                                   <Select
                                     value={link.icon}
                                     onValueChange={(value) => handleUpdateLink(link.id, { icon: value })}
                                   >
-                                    <SelectTrigger className="w-32">
+                                    <SelectTrigger className="w-full sm:w-32" aria-label={`Select icon for ${link.title}`}>
                                       <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -297,7 +286,7 @@ export function LinksTab() {
                                   </Select>
 
                                   <div className="flex items-center space-x-2">
-                                    <Label htmlFor={`premium-${link.id}`} className="text-sm">
+                                    <Label htmlFor={`premium-${link.id}`} className="text-sm whitespace-nowrap">
                                       Premium
                                     </Label>
                                     <Switch
@@ -308,7 +297,7 @@ export function LinksTab() {
                                   </div>
 
                                   <div className="flex items-center space-x-2">
-                                    <Label htmlFor={`visible-${link.id}`} className="text-sm">
+                                    <Label htmlFor={`visible-${link.id}`} className="text-sm whitespace-nowrap">
                                       Visible
                                     </Label>
                                     <Switch
@@ -322,7 +311,8 @@ export function LinksTab() {
                                     variant="outline"
                                     size="sm"
                                     onClick={() => handleDeleteLink(link.id)}
-                                    className="text-destructive hover:text-destructive"
+                                    className="text-destructive hover:text-destructive flex-shrink-0"
+                                    aria-label={`Delete link: ${link.title}`}
                                   >
                                     <Trash2 className="h-4 w-4" />
                                   </Button>

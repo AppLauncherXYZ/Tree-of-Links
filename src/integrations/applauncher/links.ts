@@ -74,6 +74,7 @@ export async function createLink(linkData: Omit<Link, 'id' | 'createdAt' | 'upda
   const newLink: Link = {
     ...linkData,
     id: `link-${Date.now()}`,
+    icon: linkData.icon || 'globe',
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -136,6 +137,14 @@ export async function reorderLinks(linkIds: string[]): Promise<void> {
     if (linkIndex !== -1) {
       mockLinks[linkIndex].order = index;
       mockLinks[linkIndex].updatedAt = new Date();
+    }
+  });
+
+  // Ensure all links have unique order values
+  mockLinks.forEach((link, index) => {
+    if (!linkIds.includes(link.id)) {
+      link.order = linkIds.length + index;
+      link.updatedAt = new Date();
     }
   });
 }

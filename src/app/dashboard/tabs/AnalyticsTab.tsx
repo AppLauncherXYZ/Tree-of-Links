@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 import { Download, TrendingUp, Users, MousePointer, Percent } from "lucide-react"
 import { getAnalyticsSummary, AnalyticsSummary } from "@/integrations/applauncher/analytics"
+import { AnalyticsTabSkeleton } from "@/components/ui/skeleton-loaders"
 
 export function AnalyticsTab() {
   const [analyticsData, setAnalyticsData] = useState<AnalyticsSummary | null>(null)
@@ -68,15 +69,7 @@ export function AnalyticsTab() {
   }
 
   if (loading) {
-    return (
-      <div className="space-y-4">
-        <Card>
-          <CardContent className="flex items-center justify-center h-64">
-            <div className="text-muted-foreground">Loading analytics...</div>
-          </CardContent>
-        </Card>
-      </div>
-    )
+    return <AnalyticsTabSkeleton />
   }
 
   if (!analyticsData) {
@@ -85,6 +78,52 @@ export function AnalyticsTab() {
         <Card>
           <CardContent className="flex items-center justify-center h-64">
             <div className="text-muted-foreground">Failed to load analytics data</div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
+  // Check if analytics data is empty or has no meaningful data
+  const hasNoData = !analyticsData ||
+    (analyticsData.totalViews === 0 &&
+     analyticsData.totalClicks === 0 &&
+     analyticsData.uniqueVisitors === 0 &&
+     analyticsData.topLinks.length === 0 &&
+     Object.keys(analyticsData.clicksByDate).length === 0);
+
+  if (hasNoData) {
+    return (
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold">Link Analytics</h2>
+            <p className="text-muted-foreground">
+              View clicks, engagement, and performance metrics for your links.
+            </p>
+          </div>
+          <Button onClick={exportToCSV} variant="outline" className="gap-2" disabled>
+            <Download className="h-4 w-4" />
+            Export CSV
+          </Button>
+        </div>
+
+        {/* Empty State */}
+        <Card>
+          <CardContent className="flex flex-col items-center justify-center py-16">
+            <div className="text-center space-y-4">
+              <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center">
+                <TrendingUp className="h-8 w-8 text-muted-foreground" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold">No Analytics Data Yet</h3>
+                <p className="text-muted-foreground max-w-sm">
+                  Analytics data will appear here once your links start receiving clicks and views.
+                  Share your link tree to start collecting data!
+                </p>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -101,14 +140,14 @@ export function AnalyticsTab() {
             View clicks, engagement, and performance metrics for your links.
           </p>
         </div>
-        <Button onClick={exportToCSV} variant="outline" className="gap-2">
+        <Button onClick={exportToCSV} variant="outline" className="gap-2" aria-label="Export analytics data to CSV file">
           <Download className="h-4 w-4" />
           Export CSV
         </Button>
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Views</CardTitle>

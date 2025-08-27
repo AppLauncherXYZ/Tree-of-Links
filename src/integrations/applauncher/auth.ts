@@ -79,13 +79,16 @@ export async function createOrUpdateUser(userData: Partial<User>): Promise<User>
     return mockUsers[existingUserIndex];
   } else {
     // Create new user
-    const newUser: User = {
+    const now = new Date();
+    const newUser: User & { createdAt: Date; updatedAt: Date } = {
       id: userData.id || `user-${Date.now()}`,
       username: userData.username || '',
       email: userData.email || '',
       displayName: userData.displayName || '',
       bio: userData.bio || '',
-      avatar: userData.avatar || ''
+      avatar: userData.avatar || '',
+      createdAt: now,
+      updatedAt: now
     };
     mockUsers.push(newUser);
     return newUser;
@@ -109,7 +112,7 @@ export async function isUsernameAvailable(username: string): Promise<boolean> {
  * Validate username format
  */
 export function validateUsername(username: string): { isValid: boolean; error?: string } {
-  if (!username.trim()) {
+  if (!username || !username.trim()) {
     return { isValid: false, error: 'Username is required' };
   }
 
