@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed": "tsx scripts/demo-seed.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",
@@ -43,6 +44,7 @@
     "eslint-config-next": "15.5.2",
     "prisma": "^6.14.0",
     "tailwindcss": "^4",
+    "tsx": "^4.7.0",
     "tw-animate-css": "^1.3.7",
     "typescript": "^5"
   }

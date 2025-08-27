@@ -1,4 +1,5 @@
 // TODO: Swap to AppLauncher SDK
+import { USE_MOCKS, requireAppLauncherSDK } from '@/lib/config';
 
 export interface Link {
   id: string;
@@ -124,6 +125,10 @@ const mockThemes: Theme[] = [
  * TODO: Replace with AppLauncher SDK database operations
  */
 export async function listLinks(userId: string): Promise<Link[]> {
+  if (!USE_MOCKS) {
+    requireAppLauncherSDK();
+  }
+
   // Mock implementation - replace with AppLauncher SDK
   return mockLinks.filter(link => link.userId === userId);
 }
@@ -133,6 +138,10 @@ export async function listLinks(userId: string): Promise<Link[]> {
  * TODO: Replace with AppLauncher SDK database operations
  */
 export async function createLink(link: Omit<Link, 'id' | 'createdAt' | 'updatedAt'>): Promise<Link> {
+  if (!USE_MOCKS) {
+    requireAppLauncherSDK();
+  }
+
   // Mock implementation - replace with AppLauncher SDK
   const newLink: Link = {
     ...link,
@@ -149,6 +158,10 @@ export async function createLink(link: Omit<Link, 'id' | 'createdAt' | 'updatedA
  * TODO: Replace with AppLauncher SDK database operations
  */
 export async function updateLink(linkId: string, updates: Partial<Omit<Link, 'id' | 'createdAt' | 'updatedAt'>>): Promise<Link | null> {
+  if (!USE_MOCKS) {
+    requireAppLauncherSDK();
+  }
+
   // Mock implementation - replace with AppLauncher SDK
   const linkIndex = mockLinks.findIndex(link => link.id === linkId);
   if (linkIndex === -1) return null;
@@ -166,6 +179,10 @@ export async function updateLink(linkId: string, updates: Partial<Omit<Link, 'id
  * TODO: Replace with AppLauncher SDK database operations
  */
 export async function deleteLink(linkId: string): Promise<boolean> {
+  if (!USE_MOCKS) {
+    requireAppLauncherSDK();
+  }
+
   // Mock implementation - replace with AppLauncher SDK
   const linkIndex = mockLinks.findIndex(link => link.id === linkId);
   if (linkIndex === -1) return false;
@@ -179,6 +196,10 @@ export async function deleteLink(linkId: string): Promise<boolean> {
  * TODO: Replace with AppLauncher SDK database operations
  */
 export async function reorderLinks(userId: string, linkIds: string[]): Promise<boolean> {
+  if (!USE_MOCKS) {
+    requireAppLauncherSDK();
+  }
+
   // Mock implementation - replace with AppLauncher SDK
   const userLinks = mockLinks.filter(link => link.userId === userId);
   if (userLinks.length !== linkIds.length) return false;
@@ -200,6 +221,10 @@ export async function reorderLinks(userId: string, linkIds: string[]): Promise<b
  * TODO: Replace with AppLauncher SDK database operations
  */
 export async function getTheme(userId: string): Promise<Theme | null> {
+  if (!USE_MOCKS) {
+    requireAppLauncherSDK();
+  }
+
   // Mock implementation - replace with AppLauncher SDK
   return mockThemes.find(theme => theme.userId === userId) || null;
 }
@@ -209,6 +234,10 @@ export async function getTheme(userId: string): Promise<Theme | null> {
  * TODO: Replace with AppLauncher SDK database operations
  */
 export async function saveTheme(theme: Omit<Theme, 'id' | 'createdAt' | 'updatedAt'>): Promise<Theme> {
+  if (!USE_MOCKS) {
+    requireAppLauncherSDK();
+  }
+
   // Mock implementation - replace with AppLauncher SDK
   const existingThemeIndex = mockThemes.findIndex(t => t.userId === theme.userId);
 

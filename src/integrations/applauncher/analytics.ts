@@ -1,4 +1,5 @@
 // TODO: Swap to AppLauncher SDK
+import { USE_MOCKS, requireAppLauncherSDK } from '@/lib/config';
 
 export interface ClickEvent {
   linkId: string;
@@ -36,6 +37,10 @@ export interface AnalyticsSummary {
  * TODO: Replace with AppLauncher SDK analytics
  */
 export async function trackClick(event: Omit<ClickEvent, 'timestamp'>): Promise<void> {
+  if (!USE_MOCKS) {
+    requireAppLauncherSDK();
+  }
+
   // Mock implementation - replace with AppLauncher SDK
   const clickEvent: ClickEvent = {
     ...event,
@@ -49,6 +54,10 @@ export async function trackClick(event: Omit<ClickEvent, 'timestamp'>): Promise<
  * TODO: Replace with AppLauncher SDK analytics
  */
 export async function getLinkStats(userId: string): Promise<LinkStats[]> {
+  if (!USE_MOCKS) {
+    requireAppLauncherSDK();
+  }
+
   // Mock implementation - replace with AppLauncher SDK
   // In a real implementation, this would query analytics data
 
@@ -146,6 +155,9 @@ export async function getLinkStats(userId: string): Promise<LinkStats[]> {
  * TODO: Replace with AppLauncher SDK analytics
  */
 export async function getAnalyticsSummary(userId: string): Promise<AnalyticsSummary> {
+  if (!USE_MOCKS) {
+    requireAppLauncherSDK();
+  }
   const linkStats = await getLinkStats(userId);
 
   const totalViews = linkStats.reduce((sum, link) => sum + link.totalViews, 0);

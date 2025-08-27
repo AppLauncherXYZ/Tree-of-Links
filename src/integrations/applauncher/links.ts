@@ -1,4 +1,5 @@
 // TODO: Swap to AppLauncher SDK
+import { USE_MOCKS, requireAppLauncherSDK } from '@/lib/config';
 
 export interface Link {
   id: string;
@@ -53,6 +54,10 @@ const mockLinks: Link[] = [
  * Get all links for the current user, ordered by their order field
  */
 export async function listLinks(): Promise<Link[]> {
+  if (!USE_MOCKS) {
+    requireAppLauncherSDK();
+  }
+
   // Mock implementation - replace with AppLauncher SDK
   return [...mockLinks].sort((a, b) => a.order - b.order);
 }
@@ -61,6 +66,10 @@ export async function listLinks(): Promise<Link[]> {
  * Create a new link
  */
 export async function createLink(linkData: Omit<Link, 'id' | 'createdAt' | 'updatedAt'>): Promise<Link> {
+  if (!USE_MOCKS) {
+    requireAppLauncherSDK();
+  }
+
   // Mock implementation - replace with AppLauncher SDK
   const newLink: Link = {
     ...linkData,
@@ -77,6 +86,10 @@ export async function createLink(linkData: Omit<Link, 'id' | 'createdAt' | 'upda
  * Update an existing link
  */
 export async function updateLink(id: string, updates: Partial<Omit<Link, 'id' | 'createdAt' | 'updatedAt'>>): Promise<Link> {
+  if (!USE_MOCKS) {
+    requireAppLauncherSDK();
+  }
+
   // Mock implementation - replace with AppLauncher SDK
   const linkIndex = mockLinks.findIndex(link => link.id === id);
   if (linkIndex === -1) {
@@ -96,6 +109,10 @@ export async function updateLink(id: string, updates: Partial<Omit<Link, 'id' | 
  * Delete a link
  */
 export async function deleteLink(id: string): Promise<void> {
+  if (!USE_MOCKS) {
+    requireAppLauncherSDK();
+  }
+
   // Mock implementation - replace with AppLauncher SDK
   const linkIndex = mockLinks.findIndex(link => link.id === id);
   if (linkIndex === -1) {
@@ -109,6 +126,10 @@ export async function deleteLink(id: string): Promise<void> {
  * Reorder links by updating their order field
  */
 export async function reorderLinks(linkIds: string[]): Promise<void> {
+  if (!USE_MOCKS) {
+    requireAppLauncherSDK();
+  }
+
   // Mock implementation - replace with AppLauncher SDK
   linkIds.forEach((id, index) => {
     const linkIndex = mockLinks.findIndex(link => link.id === id);

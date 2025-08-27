@@ -1,4 +1,5 @@
 // TODO: Swap to AppLauncher SDK
+import { USE_MOCKS, requireAppLauncherSDK } from '@/lib/config';
 
 export interface PaymentSession {
   id: string;
@@ -11,6 +12,10 @@ export interface PaymentSession {
  * TODO: Replace with AppLauncher SDK payment integration
  */
 export async function createTipSession(userId: string): Promise<PaymentSession> {
+  if (!USE_MOCKS) {
+    requireAppLauncherSDK();
+  }
+
   // Mock implementation - replace with AppLauncher SDK
   return {
     id: `tip-session-${Date.now()}`,
@@ -24,6 +29,10 @@ export async function createTipSession(userId: string): Promise<PaymentSession> 
  * TODO: Replace with AppLauncher SDK payment integration
  */
 export async function createSubscriptionSession(userId: string): Promise<PaymentSession> {
+  if (!USE_MOCKS) {
+    requireAppLauncherSDK();
+  }
+
   // Mock implementation - replace with AppLauncher SDK
   return {
     id: `subscription-session-${Date.now()}`,
@@ -37,6 +46,10 @@ export async function createSubscriptionSession(userId: string): Promise<Payment
  * TODO: Replace with AppLauncher SDK payment integration
  */
 export async function unlockPremiumLink(linkId: string, userId: string): Promise<boolean> {
+  if (!USE_MOCKS) {
+    requireAppLauncherSDK();
+  }
+
   // Mock implementation - replace with AppLauncher SDK
   // In a real implementation, this would check payment status and unlock the link
   console.log(`Unlocking premium link ${linkId} for user ${userId}`);
@@ -47,7 +60,11 @@ export async function unlockPremiumLink(linkId: string, userId: string): Promise
  * Get billing summary for a user
  * TODO: Replace with AppLauncher SDK payment integration
  */
-export async function getBillingSummary(userId: string): Promise<{ totalEarned: number; activeSubscribers: number }> {
+export async function getBillingSummary(_userId: string): Promise<{ totalEarned: number; activeSubscribers: number }> {
+  if (!USE_MOCKS) {
+    requireAppLauncherSDK();
+  }
+
   // Mock implementation - replace with AppLauncher SDK
   // In a real implementation, this would fetch actual billing data
   return {

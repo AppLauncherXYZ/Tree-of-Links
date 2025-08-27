@@ -85,6 +85,45 @@ The template connects to your existing AppLauncher infrastructure through integr
 
 The app will run with mock data, allowing you to explore all features without backend integration.
 
+### Demo Data
+
+For a quick demo experience, you can seed the application with sample users, links, and themes:
+
+```bash
+# Seed demo data
+pnpm seed
+# or
+pnpm tsx scripts/demo-seed.ts
+```
+
+This will create three demo profiles:
+- **John Doe** (`johndoe`) - Full-stack developer with portfolio and blog links
+- **Sarah Smith** (`sarahsmith`) - Designer with creative portfolio links
+- **Alex Chen** (`alexcoder`) - AI/ML engineer with tech-focused links
+
+Visit the demo profiles at:
+- `http://localhost:3000/johndoe`
+- `http://localhost:3000/sarahsmith`
+- `http://localhost:3000/alexcoder`
+
+### Development Configuration
+
+The app uses a `USE_MOCKS` environment variable to control whether mock data or real AppLauncher SDK integration is used:
+
+- **Development mode** (`NODE_ENV=development`): Mocks are enabled by default
+- **Production mode**: Set `USE_MOCKS=false` to enforce real SDK integration
+- **Override**: Set `USE_MOCKS=true` to force mock usage even in production
+
+```bash
+# Force mock usage
+USE_MOCKS=true pnpm dev
+
+# Enforce SDK integration (will throw errors)
+USE_MOCKS=false pnpm dev
+```
+
+When `USE_MOCKS=false`, all adapter functions will throw "Implement AppLauncher SDK" errors, ensuring you implement the real integration.
+
 ### Integration Setup
 
 To connect to your AppLauncher services, replace the mock implementations in `/src/integrations/applauncher/` with your actual service calls. See the [Integration Guide](./docs/integration.md) for detailed implementation requirements.

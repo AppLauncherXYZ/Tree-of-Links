@@ -1,4 +1,5 @@
 // TODO: Swap to AppLauncher SDK
+import { USE_MOCKS, requireAppLauncherSDK } from '@/lib/config';
 
 export interface User {
   id: string;
@@ -34,6 +35,10 @@ const mockUsers: User[] = [
  * TODO: Replace with AppLauncher SDK authentication
  */
 export async function getUserByUsername(username: string): Promise<User | null> {
+  if (!USE_MOCKS) {
+    requireAppLauncherSDK();
+  }
+
   // Mock implementation - replace with AppLauncher SDK
   return mockUsers.find(user => user.username === username) || null;
 }
@@ -43,6 +48,10 @@ export async function getUserByUsername(username: string): Promise<User | null> 
  * TODO: Replace with AppLauncher SDK authentication
  */
 export async function getCurrentUser(): Promise<User | null> {
+  if (!USE_MOCKS) {
+    requireAppLauncherSDK();
+  }
+
   // Mock implementation - replace with AppLauncher SDK
   // For demo purposes, we'll simulate a new user session
   // In a real app, this would check the current session/token
@@ -54,6 +63,10 @@ export async function getCurrentUser(): Promise<User | null> {
  * TODO: Replace with AppLauncher SDK authentication
  */
 export async function createOrUpdateUser(userData: Partial<User>): Promise<User> {
+  if (!USE_MOCKS) {
+    requireAppLauncherSDK();
+  }
+
   // Mock implementation - replace with AppLauncher SDK
   const existingUserIndex = mockUsers.findIndex(user => user.id === userData.id);
 
@@ -84,6 +97,10 @@ export async function createOrUpdateUser(userData: Partial<User>): Promise<User>
  * TODO: Replace with AppLauncher SDK authentication
  */
 export async function isUsernameAvailable(username: string): Promise<boolean> {
+  if (!USE_MOCKS) {
+    requireAppLauncherSDK();
+  }
+
   // Mock implementation - replace with AppLauncher SDK
   return !mockUsers.some(user => user.username === username);
 }
