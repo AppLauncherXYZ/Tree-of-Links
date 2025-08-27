@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { getUserByUsername } from '@/integrations/applauncher/auth'
 import { getTheme, listLinks } from '@/integrations/applauncher/db'
 import { trackClick } from '@/integrations/applauncher/analytics'
-import { unlockPremiumLink, createTipSession } from '@/integrations/applauncher/payments'
+import { unlockPremiumLink, createTipSession, createSubscriptionSession } from '@/integrations/applauncher/payments'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import {
@@ -151,9 +151,38 @@ export default function UserProfilePage() {
 
     try {
       const tipSession = await createTipSession(user.id)
+      // In a real app, this would redirect to payment processor and handle callback
+      // For mock purposes, we'll simulate success after a short delay
       window.open(tipSession.url, '_blank')
+
+      // Mock success - in real app this would come from payment webhook/callback
+      setTimeout(async () => {
+        if (selectedPremiumLink) {
+          await handleUnlockPremiumLink()
+        }
+      }, 2000)
     } catch (err) {
       console.error('Failed to create tip session:', err)
+    }
+  }
+
+  const handleSubscribeUser = async () => {
+    if (!user) return
+
+    try {
+      const subscriptionSession = await createSubscriptionSession(user.id)
+      // In a real app, this would redirect to payment processor and handle callback
+      // For mock purposes, we'll simulate success after a short delay
+      window.open(subscriptionSession.url, '_blank')
+
+      // Mock success - in real app this would come from payment webhook/callback
+      setTimeout(async () => {
+        if (selectedPremiumLink) {
+          await handleUnlockPremiumLink()
+        }
+      }, 2000)
+    } catch (err) {
+      console.error('Failed to create subscription session:', err)
     }
   }
 
@@ -285,7 +314,7 @@ export default function UserProfilePage() {
           <DialogHeader>
             <DialogTitle>Unlock Premium Link</DialogTitle>
             <DialogDescription>
-              This is a premium link. Unlock it to access exclusive content.
+              This is a premium link. Choose how you'd like to support this creator to access exclusive content.
             </DialogDescription>
           </DialogHeader>
 
@@ -302,19 +331,29 @@ export default function UserProfilePage() {
             </div>
           )}
 
-          <DialogFooter>
+          <DialogFooter className="flex-col space-y-2">
+            <div className="flex w-full space-x-2">
+              <Button
+                variant="outline"
+                onClick={handleTipUser}
+                className="flex-1"
+              >
+                💝 Send Tip
+              </Button>
+              <Button
+                variant="outline"
+                onClick={handleSubscribeUser}
+                className="flex-1"
+              >
+                📅 Subscribe Monthly
+              </Button>
+            </div>
             <Button
               variant="outline"
               onClick={() => setPaywallOpen(false)}
-              disabled={unlockingLink}
+              className="w-full"
             >
               Cancel
-            </Button>
-            <Button
-              onClick={handleUnlockPremiumLink}
-              disabled={unlockingLink}
-            >
-              {unlockingLink ? 'Unlocking...' : 'Unlock Link'}
             </Button>
           </DialogFooter>
         </DialogContent>

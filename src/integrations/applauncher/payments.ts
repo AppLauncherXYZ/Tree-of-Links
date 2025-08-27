@@ -42,3 +42,16 @@ export async function unlockPremiumLink(linkId: string, userId: string): Promise
   console.log(`Unlocking premium link ${linkId} for user ${userId}`);
   return true;
 }
+
+/**
+ * Get billing summary for a user
+ * TODO: Replace with AppLauncher SDK payment integration
+ */
+export async function getBillingSummary(userId: string): Promise<{ totalEarned: number; activeSubscribers: number }> {
+  // Mock implementation - replace with AppLauncher SDK
+  // In a real implementation, this would fetch actual billing data
+  return {
+    totalEarned: 127.50,
+    activeSubscribers: 8
+  };
+}
